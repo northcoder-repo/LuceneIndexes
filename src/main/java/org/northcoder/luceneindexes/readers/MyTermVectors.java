@@ -29,30 +29,31 @@ public class MyTermVectors {
             TermVectors termVectors = indexReader.termVectors();
             for (int i = 0; i < numDocs; i++) {
 
-                sb.append("doc ").append(i).append("\n");
-
                 Fields tvFields = termVectors.get(i);
 
-                int j = 1;
-                for (String field : tvFields) {
-                    Terms terms = tvFields.terms(field);
-                    sb.append("  field ").append((j++)).append("\n");
-                    sb.append("    name ").append(field).append("\n");
-                    sb.append("    positions ").append(terms.hasPositions()).append("\n");
-                    sb.append("    offsets   ").append(terms.hasOffsets()).append("\n");
-                    sb.append("    payloads  ").append(terms.hasPayloads()).append("\n");
+                if (tvFields != null) { // there may be docs with no term vector data
+                    sb.append("doc ").append(i).append("\n");
+                    int j = 1;
+                    for (String field : tvFields) {
+                        Terms terms = tvFields.terms(field);
+                        sb.append("  field ").append((j++)).append("\n");
+                        sb.append("    name ").append(field).append("\n");
+                        sb.append("    positions ").append(terms.hasPositions()).append("\n");
+                        sb.append("    offsets   ").append(terms.hasOffsets()).append("\n");
+                        sb.append("    payloads  ").append(terms.hasPayloads()).append("\n");
 
-                    TermsEnum termsEnum = terms.iterator();
-                    while (termsEnum.next() != null) {
-                        PostingsEnum postingsEnum = termsEnum.postings(null, PostingsEnum.ALL);
-                        while (postingsEnum.nextDoc() != DocIdSetIterator.NO_MORE_DOCS) {
-                            sb.append("    term ").append(termsEnum.term().utf8ToString()).append("\n");
-                            int freq = postingsEnum.freq();
-                            sb.append("      freq ").append(freq).append("\n");
-                            for (int k = 0; k < freq; k++) {
-                                sb.append("      position ").append(postingsEnum.nextPosition()).append("\n");
-                                sb.append("        startoffset ").append(postingsEnum.startOffset()).append("\n");
-                                sb.append("        endoffset ").append(postingsEnum.endOffset()).append("\n");
+                        TermsEnum termsEnum = terms.iterator();
+                        while (termsEnum.next() != null) {
+                            PostingsEnum postingsEnum = termsEnum.postings(null, PostingsEnum.ALL);
+                            while (postingsEnum.nextDoc() != DocIdSetIterator.NO_MORE_DOCS) {
+                                sb.append("    term ").append(termsEnum.term().utf8ToString()).append("\n");
+                                int freq = postingsEnum.freq();
+                                sb.append("      freq ").append(freq).append("\n");
+                                for (int k = 0; k < freq; k++) {
+                                    sb.append("      position ").append(postingsEnum.nextPosition()).append("\n");
+                                    sb.append("        startoffset ").append(postingsEnum.startOffset()).append("\n");
+                                    sb.append("        endoffset ").append(postingsEnum.endOffset()).append("\n");
+                                }
                             }
                         }
                     }

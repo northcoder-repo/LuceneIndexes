@@ -39,6 +39,7 @@ public class MyIndexWriter {
                 new String[]{"fox", "the quick and nimble brown fox"},
                 new String[]{"dog", "the slow, slow shaggy brown dog"});
 
+        // a custom field type, just for testing!
         FieldType fieldType = new FieldType();
         fieldType.setIndexOptions(IndexOptions.DOCS_AND_FREQS_AND_POSITIONS_AND_OFFSETS);
         fieldType.setStored(true); // default = false (same as Field.Store.NO)

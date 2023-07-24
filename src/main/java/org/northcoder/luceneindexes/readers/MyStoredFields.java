@@ -26,14 +26,16 @@ public class MyStoredFields {
             StoredFields storedFields = indexReader.storedFields();
             int numDocs = indexReader.numDocs();
             for (int i = 0; i < numDocs; i++) {
-                sb.append("doc ").append(i).append("\n");
                 Document doc = storedFields.document(i);
                 List<IndexableField> indexableFields = doc.getFields();
-                for (int j = 0; j < indexableFields.size(); j++) {
-                    IndexableField field = indexableFields.get(j);
-                    sb.append("  field ").append((j + 1)).append("\n");
-                    sb.append("    name ").append(field.name()).append("\n");
-                    sb.append("    value ").append(doc.get(field.name())).append("\n");
+                if (!indexableFields.isEmpty()) { // may have no stored data
+                    sb.append("doc ").append(i).append("\n");
+                    for (int j = 0; j < indexableFields.size(); j++) {
+                        IndexableField field = indexableFields.get(j);
+                        sb.append("  field ").append((j + 1)).append("\n");
+                        sb.append("    name ").append(field.name()).append("\n");
+                        sb.append("    value ").append(doc.get(field.name())).append("\n");
+                    }
                 }
             }
         }

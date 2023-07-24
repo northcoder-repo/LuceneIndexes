@@ -57,6 +57,7 @@ public class MyPostingsData {
         TermsEnum termsEnum = terms.iterator();
 
         BytesRef term;
+        // iterate over the terms enum using next():
         while ((term = termsEnum.next()) != null) {
             processTerm(termsEnum, term);
         }
@@ -65,9 +66,12 @@ public class MyPostingsData {
     private static void processTerm(TermsEnum termsEnum, BytesRef term) throws IOException {
         sb.append("  term ").append(term.utf8ToString()).append("\n");
 
+        // the null parameter means there is no postings enum to re-use:
+        // the ALL parameter means we fetch all possible posting data:
         PostingsEnum postings = termsEnum.postings(null, PostingsEnum.ALL);
 
         int doc;
+        // iterate over the postings enum using nextDoc():
         while ((doc = postings.nextDoc()) != DocIdSetIterator.NO_MORE_DOCS) {
             processDoc(postings, doc);
         }
@@ -85,6 +89,7 @@ public class MyPostingsData {
     }
 
     private static void processPostingData(PostingsEnum postings) throws IOException {
+        // iterate over a posting's entries using nextPosition():
         int position = postings.nextPosition();
         int startOffset = postings.startOffset();
         int endOffset = postings.endOffset();
