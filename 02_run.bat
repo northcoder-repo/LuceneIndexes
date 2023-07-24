@@ -1,0 +1,11 @@
+@echo off
+
+set JAVA_HOME="C:\Program Files\Eclipse Adoptium\jdk-20.0.1.9-hotspot"
+
+cd target
+
+%JAVA_HOME%\bin\java ^
+  -cp LuceneIndexes-1.0.0.jar;lib\* ^
+  org.northcoder.luceneindexes.App
+
+cd ..
