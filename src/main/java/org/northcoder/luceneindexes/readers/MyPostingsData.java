@@ -36,6 +36,7 @@ public class MyPostingsData {
 
     private static void processSegments(IndexReader indexReader) throws IOException {
         List<LeafReaderContext> leafReaderContexts = indexReader.leaves();
+        // Iterate over the segments in the index:
         for (LeafReaderContext leafReaderContext : leafReaderContexts) {
             LeafReader leafReader = leafReaderContext.reader();
             processSegment(indexReader, leafReader);
@@ -43,8 +44,10 @@ public class MyPostingsData {
     }
 
     private static void processSegment(IndexReader indexReader, LeafReader leafReader) throws IOException {
+        // get a sorted list of indexed field names:
         List<String> indexedFields = FieldInfos.getIndexedFields(indexReader)
                 .stream().sorted().toList();
+        // iterate over each indexed field:
         for (String fieldName : indexedFields) {
             processField(leafReader, fieldName);
         }
